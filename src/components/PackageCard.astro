@@ -1,0 +1,102 @@
+---
+import type { PackageItem } from '../data/packages';
+import { getWhatsAppUrl } from '../data/site';
+
+export interface Props {
+  pkg: PackageItem;
+}
+
+const { pkg } = Astro.props;
+const waLink = getWhatsAppUrl(pkg.whatsappMessage);
+---
+
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+  <div class="mbo-card">
+    <!-- Card Media -->
+    <div class="position-relative overflow-hidden bg-light" style="aspect-ratio: 16/10;">
+      <img
+        src={pkg.image}
+        alt={pkg.alt}
+        width="700"
+        height="450"
+        loading="lazy"
+        class="w-100 h-100 object-fit-cover"
+      />
+      {pkg.badge && (
+        <span class="position-absolute top-0 start-0 m-3 badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill shadow-sm">
+          {pkg.badge}
+        </span>
+      )}
+      <span class="position-absolute bottom-0 start-0 m-3 badge bg-dark bg-opacity-75 text-white fw-semibold px-2.5 py-1.5 rounded-3">
+        {pkg.category}
+      </span>
+    </div>
+
+    <!-- Card Content -->
+    <div class="card-body p-4 d-flex flex-column flex-grow-1">
+      <h3 class="h5 fw-bold mb-2 text-dark">{pkg.title}</h3>
+      <p class="small text-muted mb-3 flex-grow-1">{pkg.summary}</p>
+
+      <!-- Target Audience -->
+      <div class="p-2.5 mb-3 rounded-3 bg-light border border-light">
+        <div class="d-flex align-items-start gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--color-secondary-blue)" class="mt-1 flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+          </svg>
+          <div class="small">
+            <strong class="text-dark">Sasaran:</strong> <span class="text-secondary">{pkg.targetAudience}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Activities Preview -->
+      <div class="mb-4">
+        <div class="small fw-bold text-dark mb-1.5">Aktivitas Utama:</div>
+        <ul class="list-unstyled mb-0 small text-muted">
+          {pkg.activities.slice(0, 3).map((act) => (
+            <li class="d-flex align-items-center gap-1.5 mb-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="var(--color-secondary-blue)" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+              </svg>
+              <span>{act}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-auto pt-2">
+        <div class="row g-2">
+          <!-- Tombol 1: Lihat Detail (Kiri di Desktop, Atas di Mobile) -->
+          <div class="col-12 col-sm-6">
+            <a
+              href={pkg.detailUrl}
+              class="btn btn-outline-primary w-100 py-2.5 rounded-pill fw-semibold small d-inline-flex align-items-center justify-content-center gap-1.5"
+              aria-label={`Lihat detail paket ${pkg.title}`}
+            >
+              <span>Lihat Detail</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Tombol 2: Beli Paket (Kanan di Desktop, Bawah di Mobile) -->
+          <div class="col-12 col-sm-6">
+            <a
+              href={`/kontak/?paket=${encodeURIComponent(pkg.title)}`}
+              class="btn-mbo-primary w-100 py-2.5 rounded-pill fw-semibold small d-inline-flex align-items-center justify-content-center gap-1.5"
+              aria-label={`Beli paket ${pkg.title}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+              </svg>
+              <span>Beli Paket</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
